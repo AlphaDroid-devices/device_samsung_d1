@@ -20,8 +20,9 @@ function blob_fixup() {
             xxd -p "${2}" | sed "s/8b022036/1f2003d5/g" | xxd -r -p > "${2}".patched
             mv "${2}".patched "${2}"
             ;;
-        vendor/lib*/libexynosdisplay.so|vendor/lib*/hw/hwcomposer.exynos9825.so|vendor/lib*/sensors.*.so)
+        vendor/lib*/sensors.*.so)
             "${PATCHELF}" --replace-needed libutils.so libutils-v32.so "${2}"
+            sed -i 's/_ZN7android6Thread3runEPKcim/_ZN7utils326Thread3runEPKcim/g' "${2}"
             ;;
     esac
 }
